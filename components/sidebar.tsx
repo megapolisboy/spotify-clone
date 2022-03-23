@@ -9,6 +9,8 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import useSpotify from "../hooks/useSpotify";
+import { observer } from "mobx-react-lite";
+import playlist from "../store/playlist";
 
 const Sidebar = () => {
   const spotifyApi = useSpotify();
@@ -19,22 +21,17 @@ const Sidebar = () => {
     if (spotifyApi.getAccessToken()) {
       spotifyApi.getUserPlaylists().then((data: any) => {
         setPlaylists(data.body.items);
+        playlist.setPlaylistId(data.body.items[0].id);
       });
     }
   }, [session, spotifyApi]);
-  console.log(playlists);
   return (
     <div
-      className="h-screen overflow-y-scroll border-r border-gray-900 p-5 text-sm text-gray-500 
-    scrollbar-hide"
+      className="hidden h-screen overflow-y-scroll border-r border-gray-900 p-5 text-xs 
+    text-gray-500 scrollbar-hide sm:max-w-[12rem] md:inline-flex lg:max-w-[15rem]
+      lg:text-sm"
     >
       <div className="space-y-4">
-        <button
-          onClick={() => signOut()}
-          className="flex items-center space-x-2 hover:text-white"
-        >
-          <p>Log out</p>
-        </button>
         <button className="flex items-center space-x-2 hover:text-white">
           <HomeIcon className="h-5 w-5" />
           <p>Home</p>
@@ -64,16 +61,17 @@ const Sidebar = () => {
         <hr className="border-t-[0.1px] border-gray-900" />
 
         {/* Playlists */}
-        {playlists.map((playlist) => (
+        {playlists.map((pl) => (
           <p
-            key={playlist.id}
+            key={pl.id}
             className="cursor:pointer cursor-pointer hover:text-white"
+            onClick={() => playlist.setPlaylistId(pl.id)}
           >
-            {playlist.name}
+            {pl.name}
           </p>
         ))}
       </div>
     </div>
   );
 };
-export default Sidebar;
+export default observer(Sidebar);

@@ -1,4 +1,5 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
+import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Center from "../components/center";
