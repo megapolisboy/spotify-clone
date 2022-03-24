@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 //@ts-ignore
 import { shuffle } from "lodash";
 import playlist from "../store/playlist";
+//@ts-ignore
 import { observer } from "mobx-react-lite";
 import useSpotify from "../hooks/useSpotify";
 import Songs from "./songs";
