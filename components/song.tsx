@@ -1,5 +1,7 @@
 import useSpotify from "../hooks/useSpotify";
 import { millisToMinutesAndSeconds } from "../lib/time";
+import song from "../store/song";
+import { observer } from "mobx-react-lite";
 
 interface SongProps {
   track: any;
@@ -8,10 +10,24 @@ interface SongProps {
 
 const Song: React.FC<SongProps> = ({ track, order }) => {
   const spotifyApi = useSpotify();
+
+  const playSong = async () => {
+    try {
+      song.setCurrentTrackId(track.track.id);
+      song.setIsPlaying(true);
+      await spotifyApi.play({
+        uris: [track.track.uri],
+      });
+    } catch (error: any) {
+      alert("Premium account needed to play songs");
+    }
+  };
+
   return (
     <div
       className="grid cursor-pointer grid-cols-2 rounded-lg py-4 px-5
     text-gray-500 hover:bg-gray-900"
+      onClick={playSong}
     >
       <div className="flex items-center space-x-4">
         <p>{order + 1}</p>
@@ -33,4 +49,4 @@ const Song: React.FC<SongProps> = ({ track, order }) => {
   );
 };
 
-export default Song;
+export default observer(Song);

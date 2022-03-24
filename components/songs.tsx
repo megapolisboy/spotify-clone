@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import Song from "./song";
 
 const Songs: React.FC = () => {
-  console.log(playlist.playlist?.tracks.items);
   return (
     <div className="text-white">
       {playlist.playlist?.tracks.items.map((track: any, i: number) => (
