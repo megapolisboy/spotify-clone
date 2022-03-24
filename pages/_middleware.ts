@@ -1,12 +1,13 @@
 import { NextApiRequest } from "next";
 import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
+import { getSession } from "next-auth/react";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 
-export async function middleware(req: any) {
-  const token = await getToken({
-    req,
-    secret: process.env.JWT_SECRET!,
-  });
+export default async function middleware(
+  req: NextRequest,
+  event: NextFetchEvent
+) {
+  const token = await getSession({ req });
 
   const { pathname }: { pathname: string } = req.nextUrl;
 
