@@ -3,12 +3,6 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
 export async function middleware(req: any) {
-  const cookie = req.cookies["auth"];
-
-  if (!cookie) {
-    return NextResponse.redirect("/login");
-  }
-
   const token = await getToken({
     req,
     secret: process.env.JWT_SECRET!,
@@ -21,6 +15,6 @@ export async function middleware(req: any) {
   }
 
   if (!token && pathname !== "/login") {
-    return NextResponse.redirect(process.env.NEXTAUTH_URL + "/login");
+    return NextResponse.redirect("/login");
   }
 }
